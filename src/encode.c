@@ -28,7 +28,7 @@ static gct_b32 ValidImageSize(gct_i32 width, gct_i32 height) {
 }
 
 static gct_b32 SupportedImageFlags(gct_u32 flags) {
-  return flags == (gct_HDR_UNK01|gct_HDR_ALPHA);
+  return flags == gct_HDR_TRANSP_FLAGS;
 }
 
 gct_error_t gct_InitHeader(gct_header_t *hdr, int width,

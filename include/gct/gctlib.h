@@ -56,6 +56,11 @@ typedef struct gct_color_s {
 #define gct_HDR_UNK30 0x40000000
 #define gct_HDR_UNK31 0x80000000
 
+/* Common header flags */
+
+/* Image has an RGB plane and an alpha plane */
+#define gct_HDR_TRANSP_FLAGS (gct_HDR_UNK01|gct_HDR_ALPHA)
+
 /* Header to GCT texture file
  *
  * NOTE: I don't know a lot about this header,

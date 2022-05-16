@@ -57,7 +57,7 @@ int main(int argc, char **argv) {
 
   /* Initialize header from image size and desired
    * output format */
-  gct_InitHeader(&hdr, IMAGE_WIDTH, IMAGE_HEIGHT, (gct_HDR_UNK01|gct_HDR_ALPHA));
+  gct_InitHeader(&hdr, IMAGE_WIDTH, IMAGE_HEIGHT, gct_HDR_TRANSP_FLAGS);
 
   /* Allocate compressed image data */
   compressedSize = gct_EncodedSize(&hdr);
