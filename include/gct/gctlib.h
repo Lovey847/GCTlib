@@ -94,6 +94,9 @@ enum gct_error_e {
    *  it's not a mutliple of 8 */
   gct_ERR_INVALID_SIZE,
 
+  /* Unsupported image flags */
+  gct_ERR_UNSUPPORTED_FLAGS,
+
   /* Invalid NULL data pointer */
   gct_ERR_NULL_POINTER,
 
@@ -110,41 +113,46 @@ typedef int gct_error_t;
  *  NULL if err is invalid */
 const char *gct_StrError(gct_error_t err);
 
-/* Get size of CMPR data, based on image size
- *
- * width: Image width
- * height: Image height
- *
- * Return value:
- *  Size of encoded data on success
- *  -gct_ERR_INVALID_SIZE if width or height is invalid */
-gct_iptr gct_EncodedSize(int width, int height);
-
-/* Initialize gct header from image size
+/* Initialize gct header from image size and flags
  *
  * hdr: Output pointer to header
  * width: Image width
  * height: Image height
+ * flags: Image flags
  *
  * Return value:
  *  gct_SUCCESS if header was successfully initialized
- *  gct_ERR_INVALID_SIZE if width or height are invalid
+ *  gct_ERR_INVALID_SIZE if width or height is invalid
+ *  gct_ERR_UNSUPPORTED_FLAGS if flags are not supported
  *  gct_ERR_NULL_POINTER if hdr is NULL */
-gct_error_t gct_InitHeader(gct_header_t *hdr, int width, int height);
+gct_error_t gct_InitHeader(gct_header_t *hdr, int width,
+                           int height, gct_u32 flags);
 
-/* Encode raw image data to CMPR
+/* Get size of GCT image data, based on image header
  *
- * width: Image width
- * height: Image height
+ * hdr: Input pointer to image header
+ *
+ * Return value:
+ *  Size of encoded data on success
+ *  -gct_ERR_INVALID_SIZE if width(2) or height(2) is invalid or
+ *    if width/height != width2/height2
+ *  -gct_ERR_UNSUPPORTED_FLAGS if flags are not supported */
+gct_iptr gct_EncodedSize(const gct_header_t *hdr);
+
+/* Encode raw image data to GCT image data
+ *
+ * hdr: Input pointer to image header
  * input: Raw RGBA input data (size in bytes = width * height * 4)
- * output: CMPR output (size in bytes = gct_EncodedSize(width, height))
+ * output: CMPR output (size in bytes = gct_EncodedSize(hdr))
  *
  * Return value:
  *  gct_SUCCESS if input was successfully encoded to output
- *  gct_ERR_INVALID_SIZE if width or height is invalid
+ *  gct_ERR_INVALID_SIZE if width or height is invalid or
+ *    if width/height != width2/height2
+ *  gct_ERR_UNSUPPORTED_FLAGS if flags are not supported
  *  gct_ERR_NULL_POINTER if input or output are NULL
  *    translucent == gct_false */
-gct_error_t gct_Encode(int width, int height,
+gct_error_t gct_Encode(const gct_header_t *hdr,
                        const gct_color_t *input, void *output);
 
 #endif /*_GCT_GCTLIB_H*/

@@ -22,33 +22,31 @@
 #define STB_DXT_STATIC
 #include "thirdParty/stb_dxt.h"
 
-static gct_b32 ValidImageSize(int width, int height) {
+static gct_b32 ValidImageSize(gct_i32 width, gct_i32 height) {
   return ((width > 7) && (height > 7) &&
           !(width & 7) && !(height & 7));
 }
 
-gct_iptr gct_EncodedSize(int width, int height) {
-  if (!ValidImageSize(width, height))
-    return -gct_ERR_INVALID_SIZE;
-
-  // CMPR is 4-bits per pixel
-  // Alpha channel is stored as second plane
-  return width*height;
+static gct_b32 SupportedImageFlags(gct_u32 flags) {
+  return flags == (gct_HDR_UNK01|gct_HDR_ALPHA);
 }
 
-gct_error_t gct_InitHeader(gct_header_t *hdr, int width, int height)
+gct_error_t gct_InitHeader(gct_header_t *hdr, int width,
+                           int height, gct_u32 flags)
 {
   if (!hdr)
     return gct_ERR_NULL_POINTER;
   else if (!ValidImageSize(width, height))
     return gct_ERR_INVALID_SIZE;
+  else if (!SupportedImageFlags(flags))
+    return gct_ERR_UNSUPPORTED_FLAGS;
 
   gct_STORE_BIG32(hdr->width, width);
   gct_STORE_BIG32(hdr->height, height);
   hdr->width2 = hdr->width;
   hdr->height2 = hdr->height;
 
-  gct_STORE_BIG32(hdr->flags, gct_HDR_UNK01 | gct_HDR_ALPHA);
+  gct_STORE_BIG32(hdr->flags, flags);
 
   // This may be wrong
   gct_STORE_BIG32(hdr->orientation, 0);
@@ -57,6 +55,27 @@ gct_error_t gct_InitHeader(gct_header_t *hdr, int width, int height)
   hdr->pad[0] = hdr->pad[1] = 0;
 
   return gct_SUCCESS;
+}
+
+gct_iptr gct_EncodedSize(const gct_header_t *hdr) {
+  gct_i32 width;
+  gct_i32 height;
+
+  if (!hdr) return -gct_ERR_NULL_POINTER;
+
+  width = gct_SIGNED_BIG32(hdr->width);
+  height = gct_SIGNED_BIG32(hdr->height);
+
+  if ((width != gct_SIGNED_BIG32(hdr->width2)) ||
+      (height != gct_SIGNED_BIG32(hdr->height2)) ||
+      !ValidImageSize(width, height))
+    return -gct_ERR_INVALID_SIZE;
+  else if (!SupportedImageFlags(gct_BIG32(hdr->flags)))
+    return -gct_ERR_UNSUPPORTED_FLAGS;
+
+  // CMPR is 4-bits per pixel
+  // Alpha channel is stored as second plane
+  return width*height;
 }
 
 // Get 4x4 group of RGBA pixels from image
@@ -138,22 +157,32 @@ static void SwapDXT(unsigned char *block) {
   SwapDXT(alpha);                                                       \
   alpha += 8
 
-gct_error_t gct_Encode(int width, int height,
+gct_error_t gct_Encode(const gct_header_t *hdr,
                        const gct_color_t *input, void *output)
 {
   gct_iptr x, y;
   gct_color_t rect[16];
   unsigned char *block, *alpha;
+  gct_i32 width;
+  gct_i32 height;
 
   // These will give "unused function" warnings otherwise,
   // kinda wish there was a way to disable their inclusion
   (void)stb_compress_bc5_block;
   (void)stb_compress_bc4_block;
 
-  if (!input || !output)
+  if (!hdr || !input || !output)
     return gct_ERR_NULL_POINTER;
-  else if (!ValidImageSize(width, height))
+
+  width = gct_SIGNED_BIG32(hdr->width);
+  height = gct_SIGNED_BIG32(hdr->height);
+
+  if ((width != gct_SIGNED_BIG32(hdr->width2)) ||
+      (height != gct_SIGNED_BIG32(hdr->height2)) ||
+      !ValidImageSize(width, height))
     return gct_ERR_INVALID_SIZE;
+  else if (!SupportedImageFlags(gct_BIG32(hdr->flags)))
+    return gct_ERR_UNSUPPORTED_FLAGS;
 
   block = (unsigned char*)output;
   alpha = block + ((width*height) >> 1);

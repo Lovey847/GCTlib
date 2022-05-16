@@ -55,8 +55,12 @@ int main(int argc, char **argv) {
 
   MakeImageData(imageData);
 
+  /* Initialize header from image size and desired
+   * output format */
+  gct_InitHeader(&hdr, IMAGE_WIDTH, IMAGE_HEIGHT, (gct_HDR_UNK01|gct_HDR_ALPHA));
+
   /* Allocate compressed image data */
-  compressedSize = gct_EncodedSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+  compressedSize = gct_EncodedSize(&hdr);
   if (compressedSize < 0) {
     printf("ERROR: Cannot get encoded image data size! (%s)\n", gct_StrError(compressedSize));
     fclose(f);
@@ -73,7 +77,7 @@ int main(int argc, char **argv) {
   }
 
   /* Encode raw 32-bit image data into GCT image data */
-  err = gct_Encode(IMAGE_WIDTH, IMAGE_HEIGHT, imageData, compressedData);
+  err = gct_Encode(&hdr, imageData, compressedData);
   if (err != gct_SUCCESS) {
     printf("ERROR: Unable to encode image data! (%s)\n", gct_StrError(err));
     free(imageData);
@@ -81,9 +85,6 @@ int main(int argc, char **argv) {
     fclose(f);
     return EXIT_FAILURE;
   }
-
-  /* Initialize header from image size */
-  gct_InitHeader(&hdr, IMAGE_WIDTH, IMAGE_HEIGHT);
 
   /* Write header, then compressed data, to file */
   fwrite(&hdr, 1, sizeof(hdr), f);

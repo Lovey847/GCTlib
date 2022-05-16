@@ -14,6 +14,7 @@ const char *gct_StrError(gct_error_t err) {
   static const char * const ErrorTable[gct_NUM_ERR_CODES] = {
     "Success", // gct_SUCCESS
     "Invalid image size", // gct_ERR_INVALID_SIZE
+    "Unsupported image flags", // gct_ERR_UNSUPPORTED_FLAGS
     "Invalid NULL pointer", // gct_ERR_NULL_POINTER
   };
 
