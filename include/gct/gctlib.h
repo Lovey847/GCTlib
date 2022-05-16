@@ -74,7 +74,7 @@ typedef struct gct_header_s {
   /* Don't know why width and height are specified twice */
   gct_be32_t width2, height2;
 
-  /* Header flags, don't know what any of them mean */
+  /* Header flags, don't know what most of them mean */
   gct_hdr_flags_be_t flags;
 
   /* This seems to be 0 when the image is upright,
@@ -82,7 +82,7 @@ typedef struct gct_header_s {
    * I may be wrong about this */
   gct_be32_t orientation;
 
-  /* Image data starts at 0x20 */
+  /* Image data starts at 0x20 in file */
   gct_u32 pad[2];
 } gct_header_t;
 
