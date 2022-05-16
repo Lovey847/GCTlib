@@ -108,6 +108,12 @@ enum gct_error_e {
   /* Invalid NULL data pointer */
   gct_ERR_NULL_POINTER,
 
+  /* Unsupported image file */
+  gct_ERR_UNSUPPORTED_IMAGE,
+
+  /* Invalid image file */
+  gct_ERR_INVALID_IMAGE,
+
   gct_NUM_ERR_CODES
 };
 typedef int gct_error_t;
@@ -162,5 +168,30 @@ gct_iptr gct_EncodedSize(const gct_header_t *hdr);
  *    translucent == gct_false */
 gct_error_t gct_Encode(const gct_header_t *hdr,
                        const gct_color_t *input, void *output);
+
+/* Get size of raw image data required to decode
+ * GCT image
+ *
+ * file: Raw GCT file data
+ *
+ * Return value:
+ *  Size of decoded image data size on success
+ *  -gct_ERR_UNSUPPORTED_IMAGE if image format is unsupported
+ *  -gct_ERR_INVALID_IMAGE if image file is invalid */
+gct_iptr gct_DecodedSize(const void *file);
+
+/* Deocde GCT file into raw image data
+ *
+ * file: Raw GCT file data
+ * width: Output pointer to image width
+ * height: Output pointer to image height
+ * output: Output pointer to image data (size in bytes = gct_DecodedSize(file))
+ *
+ * Return value:
+ *  gct_SUCCESS if file was successfully decoded to output
+ *  gct_ERR_UNSUPPORTED_IMAGE if image format is unsupported
+ *  gct_ERR_INVALID_IMAGE if image file is invalid */
+gct_error_t gct_Decode(const void *file, int *width,
+                       int *height, gct_color_t *output);
 
 #endif /*_GCT_GCTLIB_H*/

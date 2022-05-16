@@ -16,6 +16,8 @@ const char *gct_StrError(gct_error_t err) {
     "Invalid image size", // gct_ERR_INVALID_SIZE
     "Unsupported image flags", // gct_ERR_UNSUPPORTED_FLAGS
     "Invalid NULL pointer", // gct_ERR_NULL_POINTER
+    "Unsupported image file", // gct_ERR_UNSUPPORTED_IMAGE
+    "Invalid image file", // gct_ERR_INVALID_IMAGE
   };
 
   if (err < 0) err = -err;
