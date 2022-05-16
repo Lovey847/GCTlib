@@ -56,6 +56,9 @@ typedef struct gct_color_s {
 #define gct_HDR_UNK30 0x40000000
 #define gct_HDR_UNK31 0x80000000
 
+typedef gct_u32 gct_hdr_flags_t;
+typedef gct_be32_t gct_hdr_flags_be_t;
+
 /* Common header flags */
 
 /* Image has an RGB plane and an alpha plane */
@@ -72,7 +75,7 @@ typedef struct gct_header_s {
   gct_be32_t width2, height2;
 
   /* Header flags, don't know what any of them mean */
-  gct_be32_t flags;
+  gct_hdr_flags_be_t flags;
 
   /* This seems to be 0 when the image is upright,
    * and -1 when the image is vertically flipped.
@@ -131,7 +134,7 @@ const char *gct_StrError(gct_error_t err);
  *  gct_ERR_UNSUPPORTED_FLAGS if flags are not supported
  *  gct_ERR_NULL_POINTER if hdr is NULL */
 gct_error_t gct_InitHeader(gct_header_t *hdr, int width,
-                           int height, gct_u32 flags);
+                           int height, gct_hdr_flags_t flags);
 
 /* Get size of GCT image data, based on image header
  *
