@@ -20,7 +20,9 @@ typedef struct gct_color_s {
 /* GCT texture flags, barely know what they mean
  *
  * Either 16 or 17 means the texture is mipmapped,
- * I think one of them means it's flipped */
+ * I think one of them means it's flipped
+ *
+ * Maybe 01 means it has an RGB plane? */
 #define gct_HDR_UNK00 0x00000001
 #define gct_HDR_UNK01 0x00000002
 #define gct_HDR_UNK02 0x00000004
