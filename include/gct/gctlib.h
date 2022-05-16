@@ -125,7 +125,6 @@ gct_iptr gct_EncodedSize(int width, int height);
  * hdr: Output pointer to header
  * width: Image width
  * height: Image height
- * flipped: Whether the image is vertically flipped or not
  *
  * Return value:
  *  gct_SUCCESS if header was successfully initialized
