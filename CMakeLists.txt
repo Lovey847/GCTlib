@@ -17,7 +17,7 @@ add_library(gctlib STATIC)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
   if (CMAKE_C_COMPILER_ID STREQUAL GNU)
     target_compile_options(gctlib PRIVATE -pedantic -Wall -Wextra -Werror)
-    message(VERBOSE "Added '-pedantic -Wall -Wextra -Werror'")
+    message(VERBOSE "GCTLib: Added '-pedantic -Wall -Wextra -Werror'")
   endif ()
 endif ()
 
