@@ -5,6 +5,8 @@
  *
  * File description:
  *  Convert raw 32-bit image data to a gct using GCTlib
+ *  NOTE: No error checking is done on CRT functions for brevity,
+ *        this program may crash!
  *
  ******************************************************************************/
 
@@ -31,33 +33,22 @@ int main(int argc, char **argv) {
   gct_header_t hdr;
   gct_iptr compressedSize;
 
-  /* Get output filename from command line */
   out = GetOutputFilename(argc, argv);
-  if (!out) {
-    puts("ERROR: Invalid output filename!");
-    return EXIT_FAILURE;
-  }
-
-  /* Open output file */
   f = fopen(out, "wb");
-  if (!f) {
-    printf("ERROR: Cannot open \"%s\"!\n", out);
-    return EXIT_FAILURE;
-  }
 
-  /* Allocate & make image data */
+  /* Allocate & initialize raw image data */
   imageData = (gct_color_t*)malloc(4 * IMAGE_WIDTH*IMAGE_HEIGHT);
-  if (!imageData) {
-    puts("ERROR: Cannot allocate image data!");
-    fclose(f);
-    return EXIT_FAILURE;
-  }
-
   MakeImageData(imageData);
 
   /* Initialize header from image size and desired
    * output format */
-  gct_InitHeader(&hdr, IMAGE_WIDTH, IMAGE_HEIGHT, gct_HDR_TRANSP_FLAGS);
+  err = gct_InitHeader(&hdr, IMAGE_WIDTH, IMAGE_HEIGHT, gct_HDR_TRANSP_FLAGS);
+  if (err != gct_SUCCESS) {
+    printf("ERROR: Cannot initialize image header! (%s)\n", gct_StrError(err));
+    fclose(f);
+    free(imageData);
+    return EXIT_FAILURE;
+  }
 
   /* Allocate compressed image data */
   compressedSize = gct_EncodedSize(&hdr);
@@ -69,12 +60,6 @@ int main(int argc, char **argv) {
   }
 
   compressedData = malloc(compressedSize);
-  if (!compressedData) {
-    puts("ERROR: Cannot allocate compressed image data!");
-    fclose(f);
-    free(imageData);
-    return EXIT_FAILURE;
-  }
 
   /* Encode raw 32-bit image data into GCT image data */
   err = gct_Encode(&hdr, imageData, compressedData);
@@ -113,6 +98,6 @@ static void MakeImageData(gct_color_t *pixels) {
 }
 
 static const char *GetOutputFilename(int argc, char **argv) {
-  if (argc < 2) return NULL;
+  if (argc < 2) return "sampleImage.gct";
   return argv[1];
 }
