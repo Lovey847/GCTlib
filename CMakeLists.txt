@@ -32,5 +32,6 @@ target_include_directories(gctlib PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_sources(gctlib PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/gctlib.c")
 target_sources(gctlib PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/encode.c")
 target_sources(gctlib PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/decode.c")
+target_sources(gctlib PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/src/common.c")
 
 set(GCTLIB_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/include" PARENT_SCOPE)

@@ -12,6 +12,7 @@
  ******************************************************************************/
 
 #include "gct/gctlib.h"
+#include "common.h"
 
 // 16-bit color type
 typedef union color16_s {
@@ -33,15 +34,6 @@ typedef struct block_s {
 
 // Alpha component
 typedef gct_u8 gct_alpha_t;
-
-static gct_b32 ValidImageSize(gct_i32 width, gct_i32 height) {
-  return ((width > 7) && (height > 7) &&
-          !(width & 7) && !(height & 7));
-}
-
-static gct_b32 SupportedImageFlags(gct_hdr_flags_t flags) {
-  return flags == gct_HDR_TRANSP_FLAGS;
-}
 
 gct_iptr gct_DecodedSize(const void *file) {
   gct_i32 width, height;
