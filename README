@@ -1,7 +1,7 @@
 ============================================================
 == GCTlib ==================================================
 
-This is a C library made to load GCT texture files
+This is a C library that encodes/decodes GCT texture files
 from the GameCube versions of TimeSplitters 2
 and TimeSplitters: Future Perfect.
 
