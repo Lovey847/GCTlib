@@ -118,6 +118,10 @@ enum gct_error_e {
 };
 typedef int gct_error_t;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Convert GCTlib error code to string describing the error
  *
  * err: Error code to be converted into a string, can be negative
@@ -193,5 +197,9 @@ gct_iptr gct_DecodedSize(const void *file);
  *  gct_ERR_INVALID_IMAGE if image file is invalid */
 gct_error_t gct_Decode(const void *file, int *width,
                        int *height, gct_color_t *output);
+
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
 
 #endif /*_GCT_GCTLIB_H*/
