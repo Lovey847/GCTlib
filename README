@@ -1,0 +1,22 @@
+============================================================
+== GCTlib ==================================================
+
+This is a C library made to load GCT texture files
+from the GameCube versions of TimeSplitters 2
+and TimeSplitters: Future Perfect.
+
+Currently, it's unfinished, I don't have
+enough resources to study the header flags
+of images and what they mean.
+
+============================================================
+== License =================================================
+
+Unless otherwise specified, the MIT license applies.
+See LICENSE for more details.
+
+src/thirdParty/stb_dxt.h:
+  Header-only DXT1 encoder by fabian "ryg" giesen and stb
+  (really convenient btw, thanks both of you)
+  Available under the public domain and the MIT license,
+  see src/thirdParty/stb_dxt.h for more details.
