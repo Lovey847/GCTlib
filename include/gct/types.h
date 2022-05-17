@@ -1,10 +1,10 @@
 /******************************************************************************
  *
  * Copyright(c) 2022 Lian Ferrand
- * This file is part of GCTLib
+ * This file is part of GCTlib
  *
  * File description:
- *  Base GCTLib types
+ *  Base GCTlib types
  *
  ******************************************************************************/
 

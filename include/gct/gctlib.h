@@ -1,10 +1,10 @@
 /******************************************************************************
  *
  * Copyright(c) 2022 Lian Ferrand
- * This file is part of GCTLib
+ * This file is part of GCTlib
  *
  * File description:
- *  GCTLib main header file, include this to use GCTLib in your C project
+ *  GCTlib main header file, include this to use GCTlib in your C project
  *
  ******************************************************************************/
 

@@ -1,10 +1,10 @@
 #******************************************************************************
 #*
 #* Copyright(c) 2022 Lian Ferrand
-#* This file is part of GCTLib
+#* This file is part of GCTlib
 #*
 #* File description:
-#*  GCTLib library makefile
+#*  GCTlib library makefile
 #*
 #******************************************************************************
 
@@ -17,11 +17,11 @@ add_library(gctlib STATIC)
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
   if (CMAKE_C_COMPILER_ID STREQUAL GNU)
     target_compile_options(gctlib PRIVATE -pedantic -Wall -Wextra -Werror)
-    message(VERBOSE "GCTLib: Added '-pedantic -Wall -Wextra -Werror'")
+    message(VERBOSE "GCTlib: Added '-pedantic -Wall -Wextra -Werror'")
   endif ()
 endif ()
 
-message(VERBOSE "GCTLib: Settings C standard to C99")
+message(VERBOSE "GCTlib: Settings C standard to C99")
 set_target_properties(gctlib PROPERTIES C_STANDARD 99)
 set_target_properties(gctlib PROPERTIES C_STANDARD_REQUIRED ON)
 set_target_properties(gctlib PROPERTIES C_EXTENSIONS OFF)
