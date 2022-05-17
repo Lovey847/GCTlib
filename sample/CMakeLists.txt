@@ -11,7 +11,7 @@
 add_subdirectory("${CMAKE_SOURCE_DIR}/.." "${CMAKE_BINARY_DIR}/gctlib")
 
 cmake_minimum_required(VERSION 3.16.2)
-project(example C)
+project(example C CXX)
 
 # Encoder
 add_executable(encoder)
@@ -44,11 +44,11 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
   endif ()
 endif ()
 
-message(VERBOSE "decoder: Setting C standard to C90")
-set_target_properties(decoder PROPERTIES C_STANDARD 90)
-set_target_properties(decoder PROPERTIES C_STANDARD_REQUIRED ON)
-set_target_properties(decoder PROPERTIES C_EXTENSIONS OFF)
+message(VERBOSE "decoder: Setting C++ standard to C++11")
+set_target_properties(decoder PROPERTIES CXX_STANDARD 11)
+set_target_properties(decoder PROPERTIES CXX_STANDARD_REQUIRED ON)
+set_target_properties(decoder PROPERTIES CXX_EXTENSIONS OFF)
 
 target_include_directories(decoder PRIVATE "${GCTLIB_INCLUDE_DIR}")
-target_sources(decoder PRIVATE "${CMAKE_SOURCE_DIR}/src/decode.c")
+target_sources(decoder PRIVATE "${CMAKE_SOURCE_DIR}/src/decode.cpp")
 target_link_libraries(decoder gctlib)
