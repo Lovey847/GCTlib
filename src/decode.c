@@ -65,14 +65,16 @@ gct_iptr gct_DecodedSize(const void *file) {
 
 // Convert color16_t into gct_color_t
 static void Color16To32(color16_t c16, gct_color_t *c32) {
-  c32->r = c16.c.r << 3;
-  c32->g = c16.c.g << 2;
-  c32->b = c16.c.b << 3;
+  // Round colors
+  c32->r = (c16.c.r << 3) | (c16.c.r >> 2);
+  c32->g = (c16.c.g << 2) | (c16.c.g >> 4);
+  c32->b = (c16.c.b << 3) | (c16.c.b >> 2);
 }
 
 // Convert alpha color16_t into gct_color_t
 static void Alpha16To32(color16_t a16, gct_alpha_t *out) {
-  *out = a16.c.g << 2;
+  // Round alpha
+  *out = (a16.c.g << 2) | (a16.c.g >> 4);
 }
 
 // Lerp 1 third of color a, and 2 thirds of color b
